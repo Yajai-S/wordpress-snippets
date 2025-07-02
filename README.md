@@ -14,7 +14,7 @@
   แสดง PV ของสินค้าบนหน้า product page ทั้งแบบ simple และ variation (ตามที่เลือก)
 
 - **pv-system-show-pv-range-under-title**  
-  แสดงช่วง PV ของสินค้าที่มีตัวเลือก (min-max) ใต้ชื่อสินค้า เช่น PV: 90 – 240
+  แสดง PV ในหน้าแรก ทั้งแบบ simple และ variation
 
 - **pv-systemload-pv-value-into-js**  
   โหลดค่า PV ของ variation เข้า JavaScript เพื่อให้ JS นำไปใช้ เช่นแสดงบนหน้า
