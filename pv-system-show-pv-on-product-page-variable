@@ -1,0 +1,17 @@
+add_action('woocommerce_single_variation', 'show_pv_on_single_variation', 20);
+function show_pv_on_single_variation() {
+    ?>
+    <div class="variation-pv-value" style="margin-top: 10px;"></div>
+    <script>
+        jQuery(function($) {
+            $('form.variations_form').on('found_variation', function(event, variation) {
+                if (variation.pv_value) {
+                    $('.variation-pv-value').html('คะแนน PV: ' + variation.pv_value);
+                } else {
+                    $('.variation-pv-value').html('');
+                }
+            });
+        });
+    </script>
+    <?php
+}
