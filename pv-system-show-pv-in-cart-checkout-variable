@@ -1,0 +1,16 @@
+// แสดงคะแนน PV ใต้ชื่อสินค้าที่เป็น variation (เฉพาะ Cart และ Checkout)
+add_filter('woocommerce_cart_item_name', 'allgiff_show_variation_pv_in_cart_checkout', 10, 3);
+
+function allgiff_show_variation_pv_in_cart_checkout($product_name, $cart_item, $cart_item_key) {
+    $product = $cart_item['data'];
+
+    // ตรวจสอบว่าเป็นสินค้า variation และมี pv_value
+    if ($product->is_type('variation')) {
+        $pv_value = get_post_meta($product->get_id(), 'pv_value', true);
+        if (!empty($pv_value)) {
+            $product_name .= '<br><span style="color:#0072BF;">PV: ' . esc_html($pv_value) . '</span>';
+        }
+    }
+
+    return $product_name;
+}
