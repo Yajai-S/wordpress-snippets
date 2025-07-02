@@ -1,0 +1,43 @@
+// ===== แสดงค่า PV ใต้ชื่อสินค้าใน loop (shop, archive, ค้นหา) =====
+add_action('woocommerce_after_shop_loop_item_title', function() {
+    global $product;
+
+    if (!$product || !is_a($product, 'WC_Product')) return;
+
+    $pv_text = '';
+
+    if ($product->is_type('simple')) {
+        // กรณีสินค้าแบบ Simple
+        $pv = get_post_meta($product->get_id(), 'pv_value', true);
+        if ($pv) {
+            $pv_text = 'PV: ' . esc_html($pv);
+        }
+
+    } elseif ($product->is_type('variable')) {
+        // กรณีสินค้าแบบ Variable → แสดงช่วง min-max ของ PV
+        $variations = $product->get_children();
+        $pv_values = [];
+
+        foreach ($variations as $variation_id) {
+            $pv = get_post_meta($variation_id, 'pv_value', true);
+            if ($pv !== '') {
+                $pv_values[] = floatval($pv);
+            }
+        }
+
+        if (!empty($pv_values)) {
+            $min_pv = min($pv_values);
+            $max_pv = max($pv_values);
+
+            if ($min_pv === $max_pv) {
+                $pv_text = 'PV: ' . esc_html($min_pv);
+            } else {
+                $pv_text = 'PV: ' . esc_html($min_pv) . ' – ' . esc_html($max_pv);
+            }
+        }
+    }
+
+    if ($pv_text) {
+        echo '<div class="pv-loop" style="font-size: 0.95em; color: #0171BE; margin-top: 4px;">' . $pv_text . '</div>';
+    }
+}, 11);
