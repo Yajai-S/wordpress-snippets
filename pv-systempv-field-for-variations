@@ -1,0 +1,21 @@
+// เพิ่มช่อง PV ให้กับแต่ละตัวเลือก
+add_action('woocommerce_variation_options_pricing', 'add_pv_field_to_variations', 10, 3);
+function add_pv_field_to_variations($loop, $variation_data, $variation) {
+    woocommerce_wp_text_input(array(
+        'id' => 'pv_value[' . $loop . ']',
+        'label' => __('คะแนน PV', 'woocommerce'),
+        'desc_tip' => true,
+        'description' => __('ใส่คะแนน PV สำหรับตัวเลือกนี้'),
+        'value' => get_post_meta($variation->ID, 'pv_value', true),
+        'type' => 'number',
+        'custom_attributes' => array('step' => 'any', 'min' => '0'),
+    ));
+}
+
+// บันทึกค่า PV
+add_action('woocommerce_save_product_variation', 'save_pv_field_variations', 10, 2);
+function save_pv_field_variations($variation_id, $i) {
+    if (isset($_POST['pv_value'][$i])) {
+        update_post_meta($variation_id, 'pv_value', sanitize_text_field($_POST['pv_value'][$i]));
+    }
+}
